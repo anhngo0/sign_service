@@ -1,0 +1,28 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth_service
+          uri: lb://auth_service
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: sign_service
+          uri: lb://sign_service
+          predicates:
+            - Path=/api/v1/sign-document/**
+            - Path=/api/v1/pkcs12/**
+      discovery:
+        locator:
+          enabled: true
+server:
+  port: 8080
+logging:
+  level:
+    root: DEBUG
